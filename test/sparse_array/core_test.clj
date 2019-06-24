@@ -65,3 +65,28 @@
           sparse (dense-to-sparse dense)]
       (is (= "hello" (get sparse 3)))
       (is (= "goodbye" (get sparse 5))))))
+
+(deftest dense-dimensions-tests
+  (testing "dense-dimensions"
+    (is (= 0 (dense-dimensions 1)))
+    (is (= 1 (dense-dimensions [1 2 3])))
+    (is (= 2 (dense-dimensions [[1 2 3][2 4 6][3 6 9]])))
+    (is (= 3
+           (dense-dimensions
+             [[[1 2 3][2 4 6][3 6 9]]
+              [[2 4 6][4 16 36][6 12 18]]
+              [[3 6 9][18 96 (* 6 36 3)][100 200 300]]])))))
+
+(deftest sparse-to-dense-tests
+  (testing "Conversion from sparse to dense arrays"
+    (let [expected [[nil nil nil nil nil]
+                    [nil nil nil nil nil]
+                    [nil nil nil nil nil]
+                    [nil nil nil nil "hello"]
+                    [nil nil nil "goodbye" nil]]
+          actual (sparse-to-dense (put
+                                    (put
+                                      (make-sparse-array :x :y)
+                                      "hello" 3 4)
+                                    "goodbye" 4 3))]
+      (is (= actual expected)))))
