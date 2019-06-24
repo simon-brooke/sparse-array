@@ -1,8 +1,12 @@
 # sparse-array
 
-A Clojure library designed to manipulate sparse *arrays* - multi-dimensional spaces accessed by indices, but containing arbitrary values rather than just numbers. For sparse spaces which contain numbers only, you're better to use a *sparce matrix* library, for example [clojure.core.matrix](https://mikera.github.io/core.matrix/).
+A Clojure library designed to manipulate sparse *arrays* - multi-dimensional spaces accessed by indices, but containing arbitrary values rather than just numbers. For sparse spaces which contain numbers only, you're better to use a *sparse matrix* library, for example [clojure.core.matrix](https://mikera.github.io/core.matrix/).
+
+Arbitrary numbers of dimensions are supported, up to limits imposed by the JVM stack.
 
 ## Conventions:
+
+### Sparse arrays
 
 For the purposes of this library, a sparse array shall be implemented as a map, such that all keys are non-negative members of the set of integers, except for the following keyword keys, all of which are expected to be present:
 
@@ -30,9 +34,110 @@ Thus an array with a single value 'hello' at coordinates x = 3, y = 4, z = 5 wou
 
 At the present stage of development, where the expectations of an operation are violated, `nil` is returned and no exception is thrown. However, it's probable that later there will be at least the option of thowing specific exceptions, as otherwise debugging could be tricky.
 
+### Dense arrays
+
+For the purposes of conversion, a **dense array** is assumed to be a vector; a two dimensional dense array a vector of vectors; a three dimensional dense array a vector of vectors of vectors, and so on. For any depth `N`, all vectors at depth `N` must have the same arity. If these conventions are not respected conversion may fail.
+
 ## Usage
 
-FIXME
+### make-sparse-array
+`sparse-array.core/make-sparse-array ([& dimensions])`
+
+Make a sparse array with these `dimensions`. Every member of `dimensions` must be a keyword; otherwise, `nil` will be returned.
+
+e.g.
+
+```clojure
+(make-sparse-array :x :y :z)
+
+=> {:dimensions 3, :coord :x, :content (:y :z)}
+
+```
+
+### sparse-array?
+
+`sparse-array.core/sparse-array? ([x])`
+
+`true` if `x` is a sparse array conforming to the conventions established by this library, else `false`.
+
+### put
+
+`sparse-array.core/put ([array value & coordinates])`
+
+Return a sparse array like this `array` but with this `value` at these `coordinates`. Returns `nil` if any coordinate is invalid.
+
+e.g.
+
+```clojure
+(put (put (make-sparse-array :x :y) "hello" 3 4) "goodbye" 4 3)
+
+=> {:dimensions 2,
+     :coord :x,
+     :content (:y),
+     3 {:dimensions 1, :coord :y, :content :data, 4 "hello"},
+     4 {:dimensions 1, :coord :y, :content :data, 3 "goodbye"}}
+```
+
+### get
+
+`sparse-array.core/get ([array & coordinates])`
+
+Return the value in this sparse `array` at these `coordinates`.
+
+### merge-sparse-arrays
+
+`sparse-array.core/merge-sparse-arrays ([a1 a2])`
+
+Return a sparse array taking values from sparse arrays `a1` and `a2`, but preferring values from `a2` where there is a conflict. `a1` and `a2` must have the **same** dimensions in the **same** order, or `nil` will be returned.
+
+e.g.
+
+```clojure
+(merge-sparse-arrays
+  (put (make-sparse-array :x) "hello" 3)
+  (put (make-sparse-array :x) "goodbye" 4)))
+
+=> {:dimensions 1, :coord :x, :content :data, 3 "hello", 4 "goodbye"}
+```
+
+### dense-to-sparse
+
+`sparse-array.core/dense-to-sparse ([x] [x coordinates])`
+
+Return a sparse array representing the content of the dense array `x`, assuming these `coordinates` if specified. *NOTE THAT* if insufficient values of `coordinates` are specified, the resulting sparse array will be malformed.
+
+e.g.
+
+```clojure
+(dense-to-sparse [nil nil nil "hello" nil "goodbye"])
+
+=> {:dimensions 1, :coord :i0, :content :data, 3 "hello", 5 "goodbye"}
+```
+
+### sparse-to-dense
+
+`sparse-array.core/sparse-to-dense ([x] [x arity])`
+
+Return a dense array representing the content of the sparse array `x`.
+
+**NOTE THAT** this has the potential to consume very large amounts of memory.
+
+e.g.
+
+```clojure
+(sparse-to-dense
+  (put
+    (put
+      (make-sparse-array :x :y)
+      "hello" 3 4)
+    "goodbye" 4 3))
+
+=> [[nil nil nil nil nil]
+    [nil nil nil nil nil]
+    [nil nil nil nil nil]
+    [nil nil nil nil "hello"]
+    [nil nil nil "goodbye" nil]]
+```
 
 ## License
 

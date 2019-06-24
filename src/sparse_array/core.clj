@@ -63,7 +63,9 @@
 
 (defn merge-sparse-arrays
   "Return a sparse array taking values from sparse arrays `a1` and `a2`,
-  but preferring values from `a2` where there is a conflict."
+  but preferring values from `a2` where there is a conflict. `a1` and `a2`
+  must have the **same** dimensions in the **same** order, or `nil` will
+  be returned."
   [a1 a2]
   (cond
     (nil? a1) a2
@@ -86,16 +88,88 @@
               (keys a1)
               (keys a2))))))))
 
+(defn dense-dimensions
+  "How many usable dimensions (represented as vectors) does the dense array
+  `x` have?"
+  [x]
+  (if
+    (vector? x)
+    (if
+      (every? vector? x)
+      (inc (apply min (map dense-dimensions x)))
+      1)
+    0))
+
 (defn dense-to-sparse
   "Return a sparse array representing the content of the dense array `x`,
-  assuming these `coordinates` if specified."
+  assuming these `coordinates` if specified. *NOTE THAT* if insufficient
+  values of `coordinates` are specified, the resulting sparse array will
+  be malformed."
   ([x]
-   :TODO)
+   (dense-to-sparse x (map #(keyword (str "i" %)) (range))))
   ([x coordinates]
-   :TODO))
+   (let
+     [dimensions (dense-dimensions x)]
+     (reduce
+       merge
+       (apply make-sparse-array (take dimensions coordinates))
+       (map
+         (fn [i v] (if (nil? v) nil (hash-map i v)))
+         (range)
+         (if
+           (> dimensions 1)
+           (map #(dense-to-sparse % (rest coordinates)) x)
+           x))))))
+
+(defn arity
+  "Return the arity of the sparse array `x`."
+  [x]
+  (inc (apply max (filter integer? (keys x)))))
+
+(defn child-arity
+  "Return the largest arity among the arities of the next dimension layer of
+  the sparse array `x`."
+  [x]
+  (apply
+    max
+    (cons
+      -1 ;; if no children are sparse arrays, we should return 0ß
+      (map
+        arity
+        (filter sparse-array? (vals x))))))
 
 (defn sparse-to-dense
   "Return a dense array representing the content of the sparse array `x`.
-  If this blows up out of memory, that's strictly your problem."
-  [x]
-  :TODO)
+
+  **NOTE THAT** this has the potential to consume very large amounts of memory."  ([x]
+   (sparse-to-dense x (arity x)))
+  ([x arity]
+   (if
+     (map? x)
+     (let [a (child-arity x)]
+       (apply
+         vector
+         (map
+           #(let [v (x %)]
+              (if
+                (= :data (:content x))
+                v
+                (sparse-to-dense v a)))
+           (range arity))))
+     (apply vector (repeat arity nil)))))
+
+
+(sparse-to-dense (put (make-sparse-array :x) "hello" 4))
+
+(def x
+  (put
+    (put
+      (make-sparse-array :x :y)
+      "hello" 3 4)
+    "goodbye" 4 3))
+
+(child-arity x)
+
+(sparse-to-dense (x 1) 4)
+(sparse-to-dense x)
+
