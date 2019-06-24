@@ -95,7 +95,10 @@
     (vector? x)
     (if
       (every? vector? x)
-      (inc (apply max (map dense-dimensions x)))
+      (inc (apply min (map dense-dimensions x)))
+      ;; `min` is right here, not `max`, because otherwise
+      ;; we will get malformed arrays. Be liberal with what you
+      ;; consume, conservative with what you return!
       1)
     0))
 
