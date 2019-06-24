@@ -141,7 +141,8 @@
 (defn sparse-to-dense
   "Return a dense array representing the content of the sparse array `x`.
 
-  **NOTE THAT** this has the potential to consume very large amounts of memory."  ([x]
+  **NOTE THAT** this has the potential to consume very large amounts of memory."
+  ([x]
    (sparse-to-dense x (arity x)))
   ([x arity]
    (if
