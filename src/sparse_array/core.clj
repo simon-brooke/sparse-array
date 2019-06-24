@@ -1,6 +1,5 @@
 (ns sparse-array.core)
 
-
 (defn make-sparse-array
   "Make a sparse array with these `dimensions`. Every member of `dimensions`
   must be a keyword; otherwise, `nil` will be returned."
@@ -96,7 +95,7 @@
     (vector? x)
     (if
       (every? vector? x)
-      (inc (apply min (map dense-dimensions x)))
+      (inc (apply max (map dense-dimensions x)))
       1)
     0))
 
@@ -159,18 +158,4 @@
            (range arity))))
      (apply vector (repeat arity nil)))))
 
-
-(sparse-to-dense (put (make-sparse-array :x) "hello" 4))
-
-(def x
-  (put
-    (put
-      (make-sparse-array :x :y)
-      "hello" 3 4)
-    "goodbye" 4 3))
-
-(child-arity x)
-
-(sparse-to-dense (x 1) 4)
-(sparse-to-dense x)
 
