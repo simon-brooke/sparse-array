@@ -1,5 +1,18 @@
 (ns sparse-array.core)
 
+(declare put get)
+
+(def ^:dynamic *safe-sparse-operations*
+  "Whether spase array operations should be conducted safely, with careful
+  checking of data conventions and exceptions thrown if expectations are not
+  met. Normally `false`."
+  false)
+
+(defn- unsafe-sparse-operations?
+  "returns `true` if `*safe-sparse-operations*` is `false`, and vice versa."
+  []
+  (not (true? *safe-sparse-operations*)))
+
 (defn make-sparse-array
   "Make a sparse array with these `dimensions`. Every member of `dimensions`
   must be a keyword; otherwise, `nil` will be returned."
@@ -14,26 +27,63 @@
                 :data
                 (rest dimensions))}))
 
+(defn- safe-test-or-throw
+  "If `v` is truthy or `*safe-sparse-operations*` is false, return `v`;
+  otherwise, throw an `ExceptionInfo` with this `message` and the map `m`."
+  [v message m]
+  (if-not
+    v
+    (if
+      *safe-sparse-operations*
+      (throw (ex-info message m))
+      v)
+    v))
+
 (defn sparse-array?
   "`true` if `x` is a sparse array conforming to the conventions established
   by this library, else `false`."
   ([x]
-    (and
-      (map? x)
-      (pos? (:dimensions x))
-      (keyword? (:coord x))
-      (if
-        (coll? (:content x))
-        (every?
-          sparse-array?
-          (map #(x %) (filter integer? (keys x))))
-        (= (:content x) :data)))))
+   (apply
+     sparse-array?
+     (cons
+       x
+       (cons
+         (:coord x)
+         (if
+           (coll? (:content x))
+           (:content x))))))
+  ([x & axes]
+   (and
+     (safe-test-or-throw
+       (map? x)
+       "Array must be a map" {:array x})
+     (safe-test-or-throw
+       (and (integer? (:dimensions x)) (pos? (:dimensions x)))
+       (str "The value of `:dimensions` must be a positive integer, not " (:dimensions x))
+       {:array x})
+     (safe-test-or-throw
+       (keyword? (:coord x))
+       (str "The value of `:coord` must be a keyword, not " (:coord x))
+       {:array x})
+     (safe-test-or-throw
+       (= (:coord x) (first axes))
+       (str "The value of `:coord` must be " (first axes) ", not " (:coord x))
+       {:array x})
+     (if
+       (empty? (rest axes))
+       (safe-test-or-throw
+         (= (:content x) :data)
+         "If there are no further axes the value of `:content` must be `:data`"
+         {:array x})
+       (and
+         (= (:content x) (rest axes))
+         (every?
+           sparse-array?
+           (map #(x %) (filter integer? (keys x)))))))))
 
-(defn put
-  "Return a sparse array like this `array` but with this `value` at these
-  `coordinates`. Returns `nil` if any coordinate is invalid."
-  [array value & coordinates]
-  (if
+(defn- unsafe-put
+  [array value coordinates]
+  (cond
     (every?
       #(and (integer? %) (or (zero? %) (pos? %)))
       coordinates)
@@ -51,14 +101,75 @@
               (apply make-sparse-array (:content array)))
             (cons value (rest coordinates))))))))
 
+(defn put
+  "Return a sparse array like this `array` but with this `value` at these
+  `coordinates`. Returns `nil` if any coordinate is invalid."
+  [array value & coordinates]
+  (cond
+    (nil? value)
+    nil
+    (unsafe-sparse-operations?)
+    (unsafe-put array value coordinates)
+    (not (sparse-array? array))
+    (throw (ex-info "Sparse array expected" {:array array}))
+    (not= (:dimensions array) (count coordinates))
+    (throw
+      (ex-info
+        (str "Expected " (:dimensions array) " coordinates; found " (count coordinates))
+        {:array array
+         :coordinates coordinates}))
+    (not
+      (every?
+        #(and (integer? %) (or (zero? %) (pos? %)))
+        coordinates))
+    (throw
+      (ex-info
+        "Coordinates must be zero or positive integers"
+        {:array array
+         :coordinates coordinates
+         :invalid (remove #(and (pos? %) (integer? %)) coordinates)}))
+    :else
+    (unsafe-put array value coordinates)
+    value
+    *safe-sparse-operations*))
+
+(defn- unsafe-get
+  ;; TODO: I am CERTAIN there is a more elegant solution to this.
+  [array coordinates]
+  (let [v (array (first coordinates))]
+    (cond
+      (= :data (:content array))
+      v
+      (nil? v)
+      nil
+      :else
+      (apply get (cons v (rest coordinates))))))
+
 (defn get
   "Return the value in this sparse `array` at these `coordinates`."
-  ;; TODO: I am CERTAIN there is a more elegant solution to this.
   [array & coordinates]
-  (if
-    (= :data (:content array))
-    (array (first coordinates))
-    (apply get (cons (array (first coordinates)) (rest coordinates)))))
+  (cond
+    (unsafe-sparse-operations?)
+    (unsafe-get array coordinates)
+    (not (sparse-array? array))
+    (throw (ex-info "Sparse array expected" {:array array}))
+    (not (every?
+           #(and (integer? %) (or (zero? %) (pos? %)))
+           coordinates))
+    (throw
+      (ex-info
+        "Coordinates must be zero or positive integers"
+        {:array array
+         :coordinates coordinates
+         :invalid (remove #(and (pos? %) (integer? %)) coordinates)}))
+    (not (= (:dimensions array) (count coordinates)))
+    (throw
+      (ex-info
+        (str "Expected " (:dimensions array) " coordinates; found " (count coordinates))
+        {:array array
+         :coordinates coordinates}))
+    :else
+    (unsafe-get array coordinates)))
 
 (defn merge-sparse-arrays
   "Return a sparse array taking values from sparse arrays `a1` and `a2`,
@@ -74,7 +185,7 @@
     nil
     (= :data (:content a1))
     (merge a1 a2)
-    :else
+    (or (unsafe-sparse-operations?) (and (sparse-array? a1) (sparse-array? a2)))
     (reduce
       merge
       a2

@@ -4,7 +4,94 @@
 
 (deftest creation-and-testing
   (testing "Creation and testing."
-    (is (sparse-array? (make-sparse-array :x :y :z)))))
+    (is (sparse-array? (make-sparse-array :x :y :z)))
+    (is (sparse-array? {:dimensions 2,
+                        :coord :x,
+                        :content '(:y),
+                        3 {:dimensions 1,
+                           :coord :y,
+                           :content :data,
+                           4 "hello"},
+                        4 {:dimensions 1,
+                           :coord :y,
+                           :content :data,
+                           3 "goodbye"}}))
+    (is (= (sparse-array? []) false))
+    (is (= (sparse-array? "hello") false))
+    (is (=
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :dimensions))
+          false)
+        "All mandatory keywords must be present: dimensions")
+    (is (=
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :coord))
+          false)
+        "All mandatory keywords must be present: coord")
+    (is (=
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :content))
+          false)
+        "All mandatory keywords must be present: content")
+    (is (=
+          (sparse-array? {:dimensions 2,
+                          :coord :x,
+                          :content '(:y),
+                          3 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             4 "hello"},
+                          4 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             3 "goodbye"}
+                          5 :foo})
+          false)
+          "Can't have data in a non-data layer")
+    ))
+
+(deftest testing-safe
+  (testing "Checking that correct exceptions are thrown when `*safe-sparse-operations*` is true"
+    (binding [*safe-sparse-operations* true]
+      (is
+        (thrown-with-msg?
+            clojure.lang.ExceptionInfo
+            #"Array must be a map"
+            (sparse-array? [])))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"The value of `:dimensions` must be a positive integer, not .*"
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :dimensions)))
+        "All mandatory keywords must be present: dimensions")
+    (is (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"The value of `:coord` must be a keyword, not .*"
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :coord))))
+    (is (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"If there are no further axes the value of `:content` must be `:data`"
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :content)))
+        "All mandatory keywords must be present: content")
+    (is (thrown-with-msg?
+            clojure.lang.ExceptionInfo
+            #"Array must be a map"
+          (sparse-array? {:dimensions 2,
+                          :coord :x,
+                          :content '(:y),
+                          3 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             4 "hello"},
+                          4 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             3 "goodbye"}
+                          5 :foo}))
+          "Can't have data in a non-data layer"))))
 
 (deftest put-and-get
   (testing "get"
@@ -14,6 +101,13 @@
                  :content '(:y)
                  3 {:dimensions 1 :coord :y :content :data 4 "hello"}}
           actual (get array 3 4)]
+      (is (= actual expected)))
+    (let [expected nil
+          array {:dimensions 2,
+                 :coord :x,
+                 :content '(:y)
+                 3 {:dimensions 1 :coord :y :content :data 4 "hello"}}
+          actual (get array 4 3)]
       (is (= actual expected))))
   (testing "put"
     (let [expected "hello"
@@ -26,12 +120,24 @@
     (let
       [expected "hello"
        actual (get (put (make-sparse-array :x) expected 3) 3)]
-      (is (= actual expected))))
+      (is (= actual expected)))
+    (binding [*safe-sparse-operations* true]
+      ;; enabling error handling shouldn't make any difference
+      (let
+        [expected "hello"
+         actual (get (put (make-sparse-array :x) expected 3) 3)]
+        (is (= actual expected)))))
   (testing "round trip, two dimensions"
     (let
       [expected "hello"
        actual (get (put (make-sparse-array :x :y) expected 3 4) 3 4)]
-      (is (= actual expected))))
+      (is (= actual expected)))
+    (binding [*safe-sparse-operations* true]
+      ;; enabling error handling shouldn't make any difference
+    (let
+      [expected "hello"
+       actual (get (put (make-sparse-array :x :y) expected 3 4) 3 4)]
+      (is (= actual expected)))))
     (testing "round trip, three dimensions"
     (let
       [expected "hello"
@@ -41,7 +147,29 @@
     (let
       [expected "hello"
        actual (get (put (make-sparse-array :p :q :r :s) expected 3 4 5 6) 3 4 5 6)]
-      (is (= actual expected)))))
+      (is (= actual expected))))
+  (testing "Error handling, number of dimensions"
+    (binding [*safe-sparse-operations* true]
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 2"
+          (put (make-sparse-array :x :y :z) "hello" 3 4)))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 4"
+          (put (make-sparse-array :x :y :z) "hello" 3 4 5 6)))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 2"
+          (get (make-sparse-array :x :y :z) 3 4)))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 4"
+          (get (make-sparse-array :x :y :z) 3 4 5 6))))))
 
 (deftest merge-test
   (testing "merge, one dimension"
@@ -84,9 +212,17 @@
                     [nil nil nil nil nil]
                     [nil nil nil nil "hello"]
                     [nil nil nil "goodbye" nil]]
-          actual (sparse-to-dense (put
-                                    (put
-                                      (make-sparse-array :x :y)
-                                      "hello" 3 4)
-                                    "goodbye" 4 3))]
+          actual (sparse-to-dense {:dimensions 2,
+                                   :coord :x,
+                                   :content '(:y),
+                                   3 {:dimensions 1,
+                                      :coord :y,
+                                      :content :data,
+                                      4 "hello"},
+                                   4 {:dimensions 1,
+                                      :coord :y,
+                                      :content :data,
+                                      3 "goodbye"}})]
       (is (= actual expected)))))
+
+

@@ -4,6 +4,8 @@ A Clojure library designed to manipulate sparse *arrays* - multi-dimensional spa
 
 Arbitrary numbers of dimensions are supported, up to limits imposed by the JVM stack.
 
+[![Clojars Project](https://img.shields.io/clojars/v/sparse-array.svg)](https://clojars.org/sparse-array)
+
 ## Conventions:
 
 ### Sparse arrays
@@ -32,7 +34,26 @@ Thus an array with a single value 'hello' at coordinates x = 3, y = 4, z = 5 wou
   }
 ```
 
-At the present stage of development, where the expectations of an operation are violated, `nil` is returned and no exception is thrown. However, it's probable that later there will be at least the option of thowing specific exceptions, as otherwise debugging could be tricky.
+### Errors and error-reporting
+
+A dynamic variable, `*safe-sparse-operations*`, is provided to handle behaviour in error conditions. If this is `false`, bad data will generally not cause an exception to be thrown, and corrupt structures may be returned, thus:
+
+```clojure
+(put (make-sparse-array :x :y :z) "hello" 3) ;; insufficient coordinates specified
+
+=> {:dimensions 3, :coord :x, :content (:y :z), 3 {:dimensions 2, :coord :y, :content (:z), nil {:dimensions 1, :coord :z, :content :data, nil nil}}}
+```
+
+However, if `*safe-sparse-operations*` is bound to `true`, exceptions will be thrown instead:
+
+```clojure
+(binding [*safe-sparse-operations* true]
+  (put (make-sparse-array :x :y :z) "hello" 3))
+
+ExceptionInfo Expected 3 coordinates; found 1  clojure.core/ex-info (core.clj:4617)
+```
+
+Sanity checking data is potentially expensive; for this reason `*safe-sparse-operations*` defaults to `false`, but you make wish to bind it to `true` especially while debugging.
 
 ### Dense arrays
 
