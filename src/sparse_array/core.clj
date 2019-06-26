@@ -1,5 +1,7 @@
 (ns sparse-array.core)
 
+(def ^:dynamic *safe-sparse-operations* false)
+
 (defn make-sparse-array
   "Make a sparse array with these `dimensions`. Every member of `dimensions`
   must be a keyword; otherwise, `nil` will be returned."
@@ -18,22 +20,37 @@
   "`true` if `x` is a sparse array conforming to the conventions established
   by this library, else `false`."
   ([x]
-    (and
-      (map? x)
-      (pos? (:dimensions x))
-      (keyword? (:coord x))
-      (if
-        (coll? (:content x))
-        (every?
-          sparse-array?
-          (map #(x %) (filter integer? (keys x))))
-        (= (:content x) :data)))))
+   (apply
+     sparse-array?
+     (cons
+       x
+       (cons
+         (:coord x)
+         (if
+           (coll? (:content x))
+           (:content x))))))
+  ([x & axes]
+   (and
+     (map? x)
+     (pos? (:dimensions x))
+     (keyword? (:coord x))
+     (= (:coord x) (first axes))
+     (if
+       (rest axes)
+       (and
+         (= (:content x) (rest axes))
+         (every?
+           sparse-array?
+           (map #(x %) (filter integer? (keys x)))))
+       (= (:content x) :data)))))
 
 (defn put
   "Return a sparse array like this `array` but with this `value` at these
   `coordinates`. Returns `nil` if any coordinate is invalid."
   [array value & coordinates]
-  (if
+  (cond
+    (and *safe-sparse-operations* (sparse-array? array))
+    (throw (ex-info "Sparse array expected" {:array array}))
     (every?
       #(and (integer? %) (or (zero? %) (pos? %)))
       coordinates)
@@ -49,7 +66,13 @@
             (or
               (array (first coordinates))
               (apply make-sparse-array (:content array)))
-            (cons value (rest coordinates))))))))
+            (cons value (rest coordinates))))))
+    *safe-sparse-operations*
+    (throw
+      (ex-info
+        "Coordinates must be zero or positive integers"
+        {:coordinates coordinates
+         :invalid (remove integer? coordinates)}))))
 
 (defn get
   "Return the value in this sparse `array` at these `coordinates`."

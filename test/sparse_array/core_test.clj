@@ -4,7 +4,21 @@
 
 (deftest creation-and-testing
   (testing "Creation and testing."
-    (is (sparse-array? (make-sparse-array :x :y :z)))))
+    (is (sparse-array? (make-sparse-array :x :y :z)))
+    (is (sparse-array? {:dimensions 2,
+                        :coord :x,
+                        :content '(:y),
+                        3 {:dimensions 1,
+                           :coord :y,
+                           :content :data,
+                           4 "hello"},
+                        4 {:dimensions 1,
+                           :coord :y,
+                           :content :data,
+                           3 "goodbye"}}))
+    (is-not (sparse-array? []))
+    (is-not (sparse-array? "hello"))
+    ))
 
 (deftest put-and-get
   (testing "get"
@@ -84,9 +98,17 @@
                     [nil nil nil nil nil]
                     [nil nil nil nil "hello"]
                     [nil nil nil "goodbye" nil]]
-          actual (sparse-to-dense (put
-                                    (put
-                                      (make-sparse-array :x :y)
-                                      "hello" 3 4)
-                                    "goodbye" 4 3))]
+          actual (sparse-to-dense {:dimensions 2,
+                                   :coord :x,
+                                   :content '(:y),
+                                   3 {:dimensions 1,
+                                      :coord :y,
+                                      :content :data,
+                                      4 "hello"},
+                                   4 {:dimensions 1,
+                                      :coord :y,
+                                      :content :data,
+                                      3 "goodbye"}})]
       (is (= actual expected)))))
+
+
