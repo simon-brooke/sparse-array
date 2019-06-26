@@ -3,4 +3,21 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]])
+  :dependencies [[org.clojure/clojure "1.8.0"]]
+
+  ;; `lein release` doesn't play nice with `git flow release`. Run `lein release` in the
+  ;; `develop` branch, then merge the release tag into the `master` branch.
+
+  :release-tasks [["vcs" "assert-committed"]
+                  ["clean"]
+                  ["test"]
+                  ["codox"]
+                  ["change" "version" "leiningen.release/bump-version" "release"]
+                  ["vcs" "commit"]
+                  ;; ["vcs" "tag"] -- not working, problems with secret key
+                  ["uberjar"]
+                  ["install"]
+                  ["deploy" "clojars"]
+                  ["change" "version" "leiningen.release/bump-version"]
+                  ["vcs" "commit"]])
+

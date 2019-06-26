@@ -50,6 +50,49 @@
           "Can't have data in a non-data layer")
     ))
 
+(deftest testing-safe
+  (testing "Checking that correct exceptions are thrown when `*safe-sparse-operations*` is true"
+    (binding [*safe-sparse-operations* true]
+      (is
+        (thrown-with-msg?
+            clojure.lang.ExceptionInfo
+            #"Array must be a map"
+            (sparse-array? [])))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"The value of `:dimensions` must be a positive integer, not .*"
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :dimensions)))
+        "All mandatory keywords must be present: dimensions")
+    (is (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"The value of `:coord` must be a keyword, not .*"
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :coord))))
+    (is (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"If there are no further axes the value of `:content` must be `:data`"
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :content)))
+        "All mandatory keywords must be present: content")
+    (is (thrown-with-msg?
+            clojure.lang.ExceptionInfo
+            #"Array must be a map"
+          (sparse-array? {:dimensions 2,
+                          :coord :x,
+                          :content '(:y),
+                          3 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             4 "hello"},
+                          4 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             3 "goodbye"}
+                          5 :foo}))
+          "Can't have data in a non-data layer"))))
+
 (deftest put-and-get
   (testing "get"
     (let [expected "hello"
