@@ -5,6 +5,10 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]]
 
+  :plugins [[lein-codox "0.10.4"]
+            [lein-release "1.0.5"]]
+
+
   ;; `lein release` doesn't play nice with `git flow release`. Run `lein release` in the
   ;; `develop` branch, then merge the release tag into the `master` branch.
 
