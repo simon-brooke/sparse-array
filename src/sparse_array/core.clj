@@ -32,17 +32,18 @@
   ([x & axes]
    (and
      (map? x)
+     (number? (:dimensions x))
      (pos? (:dimensions x))
      (keyword? (:coord x))
      (= (:coord x) (first axes))
      (if
-       (rest axes)
+       (empty? (rest axes))
+       (= (:content x) :data)
        (and
          (= (:content x) (rest axes))
          (every?
            sparse-array?
-           (map #(x %) (filter integer? (keys x)))))
-       (= (:content x) :data)))))
+           (map #(x %) (filter integer? (keys x)))))))))
 
 (defn put
   "Return a sparse array like this `array` but with this `value` at these

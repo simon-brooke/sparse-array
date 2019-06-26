@@ -16,8 +16,38 @@
                            :coord :y,
                            :content :data,
                            3 "goodbye"}}))
-    (is-not (sparse-array? []))
-    (is-not (sparse-array? "hello"))
+    (is (= (sparse-array? []) false))
+    (is (= (sparse-array? "hello") false))
+    (is (=
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :dimensions))
+          false)
+        "All mandatory keywords must be present: dimensions")
+    (is (=
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :coord))
+          false)
+        "All mandatory keywords must be present: coord")
+    (is (=
+          (sparse-array?
+            (dissoc (make-sparse-array :x :y :z) :content))
+          false)
+        "All mandatory keywords must be present: content")
+    (is (=
+          (sparse-array? {:dimensions 2,
+                          :coord :x,
+                          :content '(:y),
+                          3 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             4 "hello"},
+                          4 {:dimensions 1,
+                             :coord :y,
+                             :content :data,
+                             3 "goodbye"}
+                          5 :foo})
+          false)
+          "Can't have data in a non-data layer")
     ))
 
 (deftest put-and-get
