@@ -53,7 +53,7 @@ However, if `*safe-sparse-operations*` is bound to `true`, exceptions will be th
 ExceptionInfo Expected 3 coordinates; found 1  clojure.core/ex-info (core.clj:4617)
 ```
 
-Sanity checking data is potentially expensive; for this reason `*safe-sparse-operations*` defaults to `false`, but you make wish to bind it to `true` especially while debugging.
+Sanity checking data is potentially expensive; for this reason `*safe-sparse-operations*` defaults to `false`, but you may wish to bind it to `true` especially while debugging.
 
 ### Dense arrays
 
