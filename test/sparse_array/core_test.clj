@@ -101,6 +101,13 @@
                  :content '(:y)
                  3 {:dimensions 1 :coord :y :content :data 4 "hello"}}
           actual (get array 3 4)]
+      (is (= actual expected)))
+    (let [expected nil
+          array {:dimensions 2,
+                 :coord :x,
+                 :content '(:y)
+                 3 {:dimensions 1 :coord :y :content :data 4 "hello"}}
+          actual (get array 4 3)]
       (is (= actual expected))))
   (testing "put"
     (let [expected "hello"
@@ -113,12 +120,24 @@
     (let
       [expected "hello"
        actual (get (put (make-sparse-array :x) expected 3) 3)]
-      (is (= actual expected))))
+      (is (= actual expected)))
+    (binding [*safe-sparse-operations* true]
+      ;; enabling error handling shouldn't make any difference
+      (let
+        [expected "hello"
+         actual (get (put (make-sparse-array :x) expected 3) 3)]
+        (is (= actual expected)))))
   (testing "round trip, two dimensions"
     (let
       [expected "hello"
        actual (get (put (make-sparse-array :x :y) expected 3 4) 3 4)]
-      (is (= actual expected))))
+      (is (= actual expected)))
+    (binding [*safe-sparse-operations* true]
+      ;; enabling error handling shouldn't make any difference
+    (let
+      [expected "hello"
+       actual (get (put (make-sparse-array :x :y) expected 3 4) 3 4)]
+      (is (= actual expected)))))
     (testing "round trip, three dimensions"
     (let
       [expected "hello"
@@ -128,7 +147,29 @@
     (let
       [expected "hello"
        actual (get (put (make-sparse-array :p :q :r :s) expected 3 4 5 6) 3 4 5 6)]
-      (is (= actual expected)))))
+      (is (= actual expected))))
+  (testing "Error handling, number of dimensions"
+    (binding [*safe-sparse-operations* true]
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 2"
+          (put (make-sparse-array :x :y :z) "hello" 3 4)))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 4"
+          (put (make-sparse-array :x :y :z) "hello" 3 4 5 6)))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 2"
+          (get (make-sparse-array :x :y :z) 3 4)))
+      (is
+        (thrown-with-msg?
+          clojure.lang.ExceptionInfo
+          #"Expected 3 coordinates; found 4"
+          (get (make-sparse-array :x :y :z) 3 4 5 6))))))
 
 (deftest merge-test
   (testing "merge, one dimension"
