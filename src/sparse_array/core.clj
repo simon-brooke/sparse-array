@@ -213,25 +213,34 @@
       1)
     0))
 
+(defn dense-array?
+  "Basically, any vector can be considered as a dense array of one dimension.
+  If we're seeking a dense array of more than one dimension, the number of
+  dimensions should be specified as `d`."
+  ([x]
+   (vector? x))
+  ([x d]
+   (and (vector? x) (< d (dense-dimensions x)))))
+
 (defn dense-to-sparse
   "Return a sparse array representing the content of the dense array `x`,
-  assuming these `coordinates` if specified. *NOTE THAT* if insufficient
-  values of `coordinates` are specified, the resulting sparse array will
+  assuming these `axes` if specified. *NOTE THAT* if insufficient
+  values of `axes` are specified, the resulting sparse array will
   be malformed."
   ([x]
    (dense-to-sparse x (map #(keyword (str "i" %)) (range))))
-  ([x coordinates]
+  ([x axes]
    (let
      [dimensions (dense-dimensions x)]
      (reduce
        merge
-       (apply make-sparse-array (take dimensions coordinates))
+       (apply make-sparse-array (take dimensions axes))
        (map
          (fn [i v] (if (nil? v) nil (hash-map i v)))
          (range)
          (if
            (> dimensions 1)
-           (map #(dense-to-sparse % (rest coordinates)) x)
+           (map #(dense-to-sparse % (rest axes)) x)
            x))))))
 
 (defn arity
