@@ -160,6 +160,100 @@ e.g.
     [nil nil nil "goodbye" nil]]
 ```
 
+### extract
+
+The whole point of working with sparse arrays is because we wish to work with
+interesting subsets of arrays the entirety of which would be too large to
+conveniently handle; thus perhaps the most important operation is to be able
+to extract a sparse subset of an array.
+
+`sparse-array.extract/extract ([array function])`
+
+Return a sparse subset of this `array` - which may be either sparse or
+dense - comprising all those cells for which this `function` returns a
+'truthy' value.
+
+e.g.
+
+```clojure
+(extract [[[1 2 3][:one :two :three]["one" "two" "three"]]
+         [[1 :two "three"]["one" 2 :three][:one "two" 3]]
+         [[1.0 2.0 3.0][2/2 4/2 6/2]["I" "II" "III"]]]
+         #(if
+           (number? %)
+           (= % 3)
+           (= (name %) "three")))
+
+=> {:dimensions 3,
+     :coord :i0,
+     :content (:i1 :i2),
+     0
+     {:dimensions 2,
+      :coord :i1,
+      :content (:i2),
+      0 {:dimensions 1, :coord :i2, :content :data, 2 3},
+      1 {:dimensions 1, :coord :i2, :content :data, 2 :three},
+      2 {:dimensions 1, :coord :i2, :content :data, 2 "three"}},
+     1
+     {:dimensions 2,
+      :coord :i1,
+      :content (:i2),
+      0 {:dimensions 1, :coord :i2, :content :data, 2 "three"},
+      1 {:dimensions 1, :coord :i2, :content :data, 2 :three},
+      2 {:dimensions 1, :coord :i2, :content :data, 2 3}},
+     2
+     {:dimensions 2,
+      :coord :i1,
+      :content (:i2),
+      1 {:dimensions 1, :coord :i2, :content :data, 2 3}}}
+```
+
+### extract-from-dense
+
+Note that the above example returns the default axis sequence {i0, i1, i2...};
+extracting from a sparse array will always retain the axes of the array
+extracted from. Dense arrays, obviously, do not have explicit axes.
+
+You may wish to specify a sequence of axes when extracting from a dense array.
+A function is provided:
+
+`sparse-array.extract/extract-from-dense ([array function] [array function axes])`
+
+Return a subset of this dense `array` comprising all those cells for which
+this `function` returns a 'truthy' value. Use these `axes` if provided.
+
+e.g.
+
+```clojure
+(extract-from-dense
+  [[[1 2 3][:one :two :three]["one" "two" "three"]]
+  [[1 :two "three"]["one" 2 :three][:one "two" 3]]
+  [[1.0 2.0 3.0][2/2 4/2 6/2]["I" "II" "III"]]]
+  integer?
+  '(:p :q :r))
+
+=> {:dimensions 3,
+     :coord :p,
+     :content (:q :r),
+     0
+     {:dimensions 2,
+      :coord :q,
+      :content (:r),
+      0 {:dimensions 1, :coord :r, :content :data, 0 1, 1 2, 2 3}},
+     1
+     {:dimensions 2,
+      :coord :q,
+      :content (:r),
+      0 {:dimensions 1, :coord :r, :content :data, 0 1},
+      1 {:dimensions 1, :coord :r, :content :data, 1 2},
+      2 {:dimensions 1, :coord :r, :content :data, 2 3}},
+     2
+     {:dimensions 2,
+      :coord :q,
+      :content (:r),
+      1 {:dimensions 1, :coord :r, :content :data, 0 1, 1 2, 2 3}}}
+```
+
 ## License
 
 Copyright © 2019 Simon Brooke
