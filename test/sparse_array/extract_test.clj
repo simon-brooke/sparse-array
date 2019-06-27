@@ -36,18 +36,28 @@
       (let [expected nil
             actual (get threes 0 0 0)]
         (is (= actual expected)))
-      (let [expected 1
+      (let [expected 3
             actual (get integers 0 0 2)]
         (is (= actual expected)))
       (let [expected nil
             actual (get keywords 0 0 2)]
         (is (= actual expected)))
-      (let [expected "three"
+      (let [expected :three
+            actual (get keywords 0 1 2)]
+        (is (= actual expected)))
+      (let [expected nil
             actual (get strings 0 0 2)]
         (is (= actual expected)))
-      (let [expected "three"
+      (let [expected 3
             actual (get threes 0 0 2)]
-        (is (= actual expected))))))
+        (is (= actual expected)))
+      (let [expected :three
+            actual (get threes 0 1 2)]
+        (is (= actual expected)))
+      (let [expected "three"
+            actual (get threes 0 2 2)]
+        (is (= actual expected)))
+      )))
 
 (deftest dense-tests
   (testing "extraction from dense array"
@@ -80,15 +90,24 @@
       (let [expected nil
             actual (get threes 0 0 0)]
         (is (= actual expected)))
-      (let [expected 1
+      (let [expected 3
             actual (get integers 0 0 2)]
         (is (= actual expected)))
       (let [expected nil
             actual (get keywords 0 0 2)]
         (is (= actual expected)))
-      (let [expected "three"
+      (let [expected :three
+            actual (get keywords 0 1 2)]
+        (is (= actual expected)))
+      (let [expected nil
             actual (get strings 0 0 2)]
         (is (= actual expected)))
-      (let [expected "three"
+      (let [expected 3
             actual (get threes 0 0 2)]
+        (is (= actual expected)))
+      (let [expected :three
+            actual (get threes 0 1 2)]
+        (is (= actual expected)))
+      (let [expected "three"
+            actual (get threes 0 2 2)]
         (is (= actual expected))))))
