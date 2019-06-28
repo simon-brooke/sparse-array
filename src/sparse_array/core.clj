@@ -42,6 +42,10 @@
 (defn sparse-array?
   "`true` if `x` is a sparse array conforming to the conventions established
   by this library, else `false`."
+  ;; TODO: sparse-array? should not throw exceptions even when
+  ;; *safe-sparse-operations* is true, since we may use to test
+  ;; whether an object is a sparse array. The place to throw the exceptions
+  ;; (if required) is after it has failed.
   ([x]
    (apply
      sparse-array?
@@ -171,6 +175,31 @@
     :else
     (unsafe-get array coordinates)))
 
+
+(defn dense-dimensions
+  "How many usable dimensions (represented as vectors) does the dense array
+  `x` have?"
+  [x]
+  (if
+    (vector? x)
+    (if
+      (every? vector? x)
+      (inc (apply min (map dense-dimensions x)))
+      ;; `min` is right here, not `max`, because otherwise
+      ;; we will get malformed arrays. Be liberal with what you
+      ;; consume, conservative with what you return!
+      1)
+    0))
+
+(defn dense-array?
+  "Basically, any vector can be considered as a dense array of one dimension.
+  If we're seeking a dense array of more than one dimension, the number of
+  dimensions should be specified as `d`."
+  ([x]
+   (vector? x))
+  ([x d]
+   (and (vector? x) (< d (dense-dimensions x)))))
+
 (defn merge-sparse-arrays
   "Return a sparse array taking values from sparse arrays `a1` and `a2`,
   but preferring values from `a2` where there is a conflict. `a1` and `a2`
@@ -198,29 +227,55 @@
               (keys a1)
               (keys a2))))))))
 
-(defn dense-dimensions
-  "How many usable dimensions (represented as vectors) does the dense array
-  `x` have?"
-  [x]
-  (if
-    (vector? x)
-    (if
-      (every? vector? x)
-      (inc (apply min (map dense-dimensions x)))
-      ;; `min` is right here, not `max`, because otherwise
-      ;; we will get malformed arrays. Be liberal with what you
-      ;; consume, conservative with what you return!
-      1)
-    0))
+(defn merge-dense-with-sparse
+  "Merge this dense array `d` with this sparse array `s`, returning a new
+  dense array with the same arity as `d`, preferring values from `s` where
+  there is conflict"
+  [d s]
+  (apply
+    vector
+    (map
+      #(cond
+         (= :data (:content s))
+         (or (s %2) %1)
+         (nil? (s %2))
+         %1
+         :else
+         (merge-dense-with-sparse %1 (s %2)))
+      d
+      (range))))
 
-(defn dense-array?
-  "Basically, any vector can be considered as a dense array of one dimension.
-  If we're seeking a dense array of more than one dimension, the number of
-  dimensions should be specified as `d`."
-  ([x]
-   (vector? x))
-  ([x d]
-   (and (vector? x) (< d (dense-dimensions x)))))
+(defn merge-arrays
+  "Merge two arrays `a1`, `a2`, which may be either dense or sparse but which
+  should have the same number of axes and compatible dimensions, and return a
+  new dense array preferring values from `a2`."
+  [a1 a2]
+  (cond
+    (dense-array? a2)
+    a2 ;; if a2 is dense, no values from a1 will be returned
+    (sparse-array? a1)
+    (cond
+      (sparse-array? a2)
+      (merge-sparse-arrays a1 a2)
+      *safe-sparse-operations*
+      (throw
+        (ex-info
+          "Object passed as array is neither dense not sparse"
+          {:array a2})))
+    (dense-array? a1)
+    (cond
+      (sparse-array? a2)
+      (merge-dense-with-sparse a1 a2)
+      *safe-sparse-operations*
+      (throw
+        (ex-info
+          "Object passed as array is neither dense not sparse"
+          {:array a2})))
+    *safe-sparse-operations*
+    (throw
+      (ex-info
+        "Object passed as array is neither dense not sparse"
+        {:array a1}))))
 
 (defn dense-to-sparse
   "Return a sparse array representing the content of the dense array `x`,
