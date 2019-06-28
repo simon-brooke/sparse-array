@@ -6,6 +6,8 @@ Arbitrary numbers of dimensions are supported, up to limits imposed by the JVM s
 
 [![Clojars Project](https://img.shields.io/clojars/v/sparse-array.svg)](https://clojars.org/sparse-array)
 
+[![CircleCI](https://circleci.com/gh/simon-brooke/sparse-array.svg?style=svg)](https://circleci.com/gh/simon-brooke/sparse-array)
+
 ## Conventions:
 
 ### Sparse arrays
@@ -210,7 +212,7 @@ e.g.
 
 ### extract-from-dense
 
-Note that the above example returns the default axis sequence {i0, i1, i2...};
+Note that the above example returns the default axis sequence `{i0, i1, i2...}`;
 extracting from a sparse array will always retain the axes of the array
 extracted from. Dense arrays, obviously, do not have explicit axes.
 
