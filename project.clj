@@ -1,4 +1,4 @@
-(defproject sparse-array "0.3.0-SNAPSHOT"
+(defproject sparse-array "0.3.0"
   :aot :all
   :cloverage {:output "docs/cloverage"}
   :codox {:metadata {:doc "**TODO**: write docs"
