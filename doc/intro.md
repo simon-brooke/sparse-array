@@ -7,7 +7,7 @@ Arbitrary numbers of dimensions are supported, up to limits imposed by the JVM s
 Available from Clojars: [![Clojars Project](https://img.shields.io/clojars/v/sparse-array.svg)](https://clojars.org/sparse-array)
 Tests currently [![CircleCI](https://circleci.com/gh/simon-brooke/sparse-array.svg?style=svg)](https://circleci.com/gh/simon-brooke/sparse-array)
 
-## Conventions:
+## Conventions
 
 ### Sparse arrays
 

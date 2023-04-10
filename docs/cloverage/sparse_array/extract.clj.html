@@ -8,205 +8,214 @@
                 001&nbsp;&nbsp;(ns&nbsp;sparse-array.extract
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                002&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[sparse-array.core&nbsp;:refer&nbsp;:all]))
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Extracting&nbsp;interesting&nbsp;data&nbsp;from&nbsp;sparse&nbsp;arrays.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[sparse-array.core&nbsp;:refer&nbsp;[*safe-sparse-operations*
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dense-array?&nbsp;dense-dimensions
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make-sparse-array&nbsp;sparse-array?]]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;
+                006&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;;;;&nbsp;The&nbsp;whole&nbsp;point&nbsp;of&nbsp;working&nbsp;with&nbsp;sparse&nbsp;arrays&nbsp;is&nbsp;to&nbsp;work&nbsp;with&nbsp;interesting
+                007&nbsp;&nbsp;;;;&nbsp;The&nbsp;whole&nbsp;point&nbsp;of&nbsp;working&nbsp;with&nbsp;sparse&nbsp;arrays&nbsp;is&nbsp;to&nbsp;work&nbsp;with&nbsp;interesting
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                005&nbsp;&nbsp;;;;&nbsp;subsets&nbsp;of&nbsp;arrays&nbsp;most&nbsp;of&nbsp;which&nbsp;are&nbsp;uninteresting.&nbsp;To&nbsp;extract&nbsp;an
+                008&nbsp;&nbsp;;;;&nbsp;subsets&nbsp;of&nbsp;arrays&nbsp;most&nbsp;of&nbsp;which&nbsp;are&nbsp;uninteresting.&nbsp;To&nbsp;extract&nbsp;an
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;;;;&nbsp;interesting&nbsp;subset&nbsp;from&nbsp;an&nbsp;array,&nbsp;we&#x27;re&nbsp;going&nbsp;to&nbsp;need&nbsp;an&nbsp;extract&nbsp;function.
+                009&nbsp;&nbsp;;;;&nbsp;interesting&nbsp;subset&nbsp;from&nbsp;an&nbsp;array,&nbsp;we&#x27;re&nbsp;going&nbsp;to&nbsp;need&nbsp;an&nbsp;extract&nbsp;function.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;
+                010&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                008&nbsp;&nbsp;(defn-&nbsp;extract-from-sparse
+                011&nbsp;&nbsp;(defn-&nbsp;extract-from-sparse
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;subset&nbsp;of&nbsp;this&nbsp;sparse&nbsp;`array`&nbsp;comprising&nbsp;all&nbsp;those&nbsp;cells&nbsp;for&nbsp;which
+                012&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;subset&nbsp;of&nbsp;this&nbsp;sparse&nbsp;`array`&nbsp;comprising&nbsp;all&nbsp;those&nbsp;cells&nbsp;for&nbsp;which
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;`function`&nbsp;returns&nbsp;a&nbsp;&#x27;truthy&#x27;&nbsp;value.&quot;
+                013&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;`function`&nbsp;returns&nbsp;a&nbsp;&#x27;truthy&#x27;&nbsp;value.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;function]
+                014&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;function]
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                015&nbsp;&nbsp;&nbsp;&nbsp;(reduce
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge
+                016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
+                017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make-sparse-array
+                018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make-sparse-array
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
+                019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:coord&nbsp;array)
+                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:coord&nbsp;array)
                 </span><br/>
-<span class="covered" title="9 out of 9 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(coll?&nbsp;(:content&nbsp;array))&nbsp;(:content&nbsp;array))))
+<span class="covered" title="10 out of 10 forms covered">
+                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(coll?&nbsp;(:content&nbsp;array))&nbsp;(:content&nbsp;array))))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(if
+                023&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(if
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;:data&nbsp;(:content&nbsp;array))
+                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;:data&nbsp;(:content&nbsp;array))
                 </span><br/>
-<span class="covered" title="11 out of 11 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(function&nbsp;(array&nbsp;%))&nbsp;{%&nbsp;(array&nbsp;%)})
-                </span><br/>
-<span class="covered" title="7 out of 7 forms covered">
-                023&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;(extract-from-sparse&nbsp;(array&nbsp;%)&nbsp;function)]
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;v)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{%&nbsp;v})))
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;array)))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                030&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                031&nbsp;&nbsp;(defn&nbsp;extract-from-dense
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                032&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;subset&nbsp;of&nbsp;this&nbsp;dense&nbsp;`array`&nbsp;comprising&nbsp;all&nbsp;those&nbsp;cells&nbsp;for&nbsp;which
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                033&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;`function`&nbsp;returns&nbsp;a&nbsp;&#x27;truthy&#x27;&nbsp;value.&nbsp;Use&nbsp;these&nbsp;`axes`&nbsp;if&nbsp;provided.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;([array&nbsp;function]
-                </span><br/>
-<span class="covered" title="15 out of 15 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extract-from-dense&nbsp;array&nbsp;function&nbsp;(map&nbsp;#(keyword&nbsp;(str&nbsp;&quot;i&quot;&nbsp;%))&nbsp;(range))))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                036&nbsp;&nbsp;&nbsp;&nbsp;([array&nbsp;function&nbsp;axes]
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[dimensions&nbsp;(dense-dimensions&nbsp;array)]
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge
+<span class="covered" title="12 out of 12 forms covered">
+                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(function&nbsp;(array&nbsp;%))&nbsp;{%&nbsp;(array&nbsp;%)})
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;make-sparse-array&nbsp;(take&nbsp;dimensions&nbsp;axes))
+                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;(extract-from-sparse&nbsp;(array&nbsp;%)&nbsp;function)]
                 </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+<span class="covered" title="2 out of 2 forms covered">
+                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;v)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;dimensions&nbsp;1)
+                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{%&nbsp;v})))
                 </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
-                </span><br/>
-<span class="covered" title="9 out of 9 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[i&nbsp;v]&nbsp;(if&nbsp;(function&nbsp;v)&nbsp;(hash-map&nbsp;i&nbsp;v)))
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(range)
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array)
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
-                </span><br/>
-<span class="covered" title="15 out of 15 forms covered">
-                049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[i&nbsp;v]&nbsp;(if&nbsp;(empty?&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;v)))&nbsp;nil&nbsp;(hash-map&nbsp;i&nbsp;v)))
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(range)
-                </span><br/>
-<span class="covered" title="11 out of 11 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(extract-from-dense&nbsp;%&nbsp;function&nbsp;(rest&nbsp;axes))&nbsp;array)))))))
+<span class="covered" title="6 out of 6 forms covered">
+                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;array)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                052&nbsp;&nbsp;
+                033&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                053&nbsp;&nbsp;(defn&nbsp;extract
+                034&nbsp;&nbsp;(defn&nbsp;extract-from-dense
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sparse&nbsp;subset&nbsp;of&nbsp;this&nbsp;`array`&nbsp;-&nbsp;which&nbsp;may&nbsp;be&nbsp;either&nbsp;sparse&nbsp;or
+                035&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;subset&nbsp;of&nbsp;this&nbsp;dense&nbsp;`array`&nbsp;comprising&nbsp;all&nbsp;those&nbsp;cells&nbsp;for&nbsp;which
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;dense&nbsp;-&nbsp;comprising&nbsp;all&nbsp;those&nbsp;cells&nbsp;for&nbsp;which&nbsp;this&nbsp;`function`&nbsp;returns&nbsp;a
+                036&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;`function`&nbsp;returns&nbsp;a&nbsp;&#x27;truthy&#x27;&nbsp;value.&nbsp;Use&nbsp;these&nbsp;`axes`&nbsp;if&nbsp;provided.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&#x27;truthy&#x27;&nbsp;value.&quot;
+                037&nbsp;&nbsp;&nbsp;&nbsp;([array&nbsp;function]
+                </span><br/>
+<span class="covered" title="15 out of 15 forms covered">
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extract-from-dense&nbsp;array&nbsp;function&nbsp;(map&nbsp;#(keyword&nbsp;(str&nbsp;&quot;i&quot;&nbsp;%))&nbsp;(range))))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;function]
+                039&nbsp;&nbsp;&nbsp;&nbsp;([array&nbsp;function&nbsp;axes]
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[dimensions&nbsp;(dense-dimensions&nbsp;array)]
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;make-sparse-array&nbsp;(take&nbsp;dimensions&nbsp;axes))
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;dimensions&nbsp;1)
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="covered" title="10 out of 10 forms covered">
+                048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[i&nbsp;v]&nbsp;(when&nbsp;(function&nbsp;v)&nbsp;(hash-map&nbsp;i&nbsp;v)))
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(range)
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array)
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="covered" title="15 out of 15 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[i&nbsp;v]&nbsp;(if&nbsp;(empty?&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;v)))&nbsp;nil&nbsp;(hash-map&nbsp;i&nbsp;v)))
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(range)
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(extract-from-dense&nbsp;%&nbsp;function&nbsp;(rest&nbsp;axes))&nbsp;array)))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                055&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                056&nbsp;&nbsp;(defn&nbsp;extract
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sparse&nbsp;subset&nbsp;of&nbsp;this&nbsp;`array`&nbsp;-&nbsp;which&nbsp;may&nbsp;be&nbsp;either&nbsp;sparse&nbsp;or
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;dense&nbsp;-&nbsp;comprising&nbsp;all&nbsp;those&nbsp;cells&nbsp;for&nbsp;which&nbsp;this&nbsp;`function`&nbsp;returns&nbsp;a
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;&#x27;truthy&#x27;&nbsp;value.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;function]
                 </span><br/>
 <span class="partial" title="2 out of 4 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                061&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sparse-array?&nbsp;array)
+                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sparse-array?&nbsp;array)
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extract-from-sparse&nbsp;array&nbsp;function)
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extract-from-sparse&nbsp;array&nbsp;function)
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(dense-array?&nbsp;array)
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(dense-array?&nbsp;array)
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extract-from-dense&nbsp;array&nbsp;function)
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extract-from-dense&nbsp;array&nbsp;function)
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*safe-sparse-operations*
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*safe-sparse-operations*
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Argument&nbsp;passed&nbsp;as&nbsp;`array`&nbsp;is&nbsp;neither&nbsp;sparse&nbsp;nor&nbsp;dense.&quot;
+                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Argument&nbsp;passed&nbsp;as&nbsp;`array`&nbsp;is&nbsp;neither&nbsp;sparse&nbsp;nor&nbsp;dense.&quot;
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array}))))
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array}))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                068&nbsp;&nbsp;
+                071&nbsp;&nbsp;
                 </span><br/>
  </body>
 </html>

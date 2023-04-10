@@ -5,529 +5,529 @@
  </head>
  <body>
 <span class="covered" title="1 out of 1 forms covered">
-                001&nbsp;&nbsp;(ns&nbsp;sparse-array.core)
+                001&nbsp;&nbsp;(ns&nbsp;sparse-array.core
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Operations&nbsp;on&nbsp;sparse&nbsp;arrays.&quot;)
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                002&nbsp;&nbsp;
+                003&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                003&nbsp;&nbsp;(declare&nbsp;put&nbsp;get)
+                004&nbsp;&nbsp;(declare&nbsp;put&nbsp;get)
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;
+                005&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                005&nbsp;&nbsp;(def&nbsp;^:dynamic&nbsp;*safe-sparse-operations*
+                006&nbsp;&nbsp;(def&nbsp;^:dynamic&nbsp;*safe-sparse-operations*
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;&nbsp;&nbsp;&quot;Whether&nbsp;spase&nbsp;array&nbsp;operations&nbsp;should&nbsp;be&nbsp;conducted&nbsp;safely,&nbsp;with&nbsp;careful
+                007&nbsp;&nbsp;&nbsp;&nbsp;&quot;Whether&nbsp;spase&nbsp;array&nbsp;operations&nbsp;should&nbsp;be&nbsp;conducted&nbsp;safely,&nbsp;with&nbsp;careful
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;&nbsp;&nbsp;checking&nbsp;of&nbsp;data&nbsp;conventions&nbsp;and&nbsp;exceptions&nbsp;thrown&nbsp;if&nbsp;expectations&nbsp;are&nbsp;not
+                008&nbsp;&nbsp;&nbsp;&nbsp;checking&nbsp;of&nbsp;data&nbsp;conventions&nbsp;and&nbsp;exceptions&nbsp;thrown&nbsp;if&nbsp;expectations&nbsp;are&nbsp;not
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;&nbsp;&nbsp;met.&nbsp;Normally&nbsp;`false`.&quot;
+                009&nbsp;&nbsp;&nbsp;&nbsp;met.&nbsp;Normally&nbsp;`false`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;false)
+                010&nbsp;&nbsp;&nbsp;&nbsp;false)
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;
+                011&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                011&nbsp;&nbsp;(defn-&nbsp;unsafe-sparse-operations?
+                012&nbsp;&nbsp;(defn-&nbsp;unsafe-sparse-operations?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;&quot;returns&nbsp;`true`&nbsp;if&nbsp;`*safe-sparse-operations*`&nbsp;is&nbsp;`false`,&nbsp;and&nbsp;vice&nbsp;versa.&quot;
+                013&nbsp;&nbsp;&nbsp;&nbsp;&quot;returns&nbsp;`true`&nbsp;if&nbsp;`*safe-sparse-operations*`&nbsp;is&nbsp;`false`,&nbsp;and&nbsp;vice&nbsp;versa.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;[]
+                014&nbsp;&nbsp;&nbsp;&nbsp;[]
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(true?&nbsp;*safe-sparse-operations*)))
+                015&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(true?&nbsp;*safe-sparse-operations*)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                015&nbsp;&nbsp;
+                016&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                016&nbsp;&nbsp;(defn&nbsp;make-sparse-array
+                017&nbsp;&nbsp;(defn&nbsp;make-sparse-array
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;&quot;Make&nbsp;a&nbsp;sparse&nbsp;array&nbsp;with&nbsp;these&nbsp;`dimensions`.&nbsp;Every&nbsp;member&nbsp;of&nbsp;`dimensions`
+                018&nbsp;&nbsp;&nbsp;&nbsp;&quot;Make&nbsp;a&nbsp;sparse&nbsp;array&nbsp;with&nbsp;these&nbsp;`dimensions`.&nbsp;Every&nbsp;member&nbsp;of&nbsp;`dimensions`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;be&nbsp;a&nbsp;keyword;&nbsp;otherwise,&nbsp;`nil`&nbsp;will&nbsp;be&nbsp;returned.&quot;
+                019&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;be&nbsp;a&nbsp;keyword;&nbsp;otherwise,&nbsp;`nil`&nbsp;will&nbsp;be&nbsp;returned.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;dimensions]
+                020&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;dimensions]
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;(when
+                021&nbsp;&nbsp;&nbsp;&nbsp;(when
                 </span><br/>
 <span class="partial" title="7 out of 8 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(pos?&nbsp;(count&nbsp;dimensions))
+                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(pos?&nbsp;(count&nbsp;dimensions))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;keyword?&nbsp;dimensions))
+                023&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;keyword?&nbsp;dimensions))
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                023&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:dimensions&nbsp;(count&nbsp;dimensions)
+                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:dimensions&nbsp;(count&nbsp;dimensions)
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coord&nbsp;(first&nbsp;dimensions)
+                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coord&nbsp;(first&nbsp;dimensions)
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:content&nbsp;(if
+                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:content&nbsp;(if
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?&nbsp;(rest&nbsp;dimensions))
+                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?&nbsp;(rest&nbsp;dimensions))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:data
+                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:data
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(rest&nbsp;dimensions))}))
+                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(rest&nbsp;dimensions))}))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                029&nbsp;&nbsp;
+                030&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                030&nbsp;&nbsp;(defn-&nbsp;safe-test-or-throw
+                031&nbsp;&nbsp;(defn-&nbsp;safe-test-or-throw
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                031&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`v`&nbsp;is&nbsp;truthy&nbsp;or&nbsp;`*safe-sparse-operations*`&nbsp;is&nbsp;false,&nbsp;return&nbsp;`v`;
+                032&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`v`&nbsp;is&nbsp;truthy&nbsp;or&nbsp;`*safe-sparse-operations*`&nbsp;is&nbsp;false,&nbsp;return&nbsp;`v`;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                032&nbsp;&nbsp;&nbsp;&nbsp;otherwise,&nbsp;throw&nbsp;an&nbsp;`ExceptionInfo`&nbsp;with&nbsp;this&nbsp;`message`&nbsp;and&nbsp;the&nbsp;map&nbsp;`m`.&quot;
+                033&nbsp;&nbsp;&nbsp;&nbsp;otherwise,&nbsp;throw&nbsp;an&nbsp;`ExceptionInfo`&nbsp;with&nbsp;this&nbsp;`message`&nbsp;and&nbsp;the&nbsp;map&nbsp;`m`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                033&nbsp;&nbsp;&nbsp;&nbsp;[v&nbsp;message&nbsp;m]
+                034&nbsp;&nbsp;&nbsp;&nbsp;[v&nbsp;message&nbsp;m]
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;(if-not
+                035&nbsp;&nbsp;&nbsp;&nbsp;(if-not
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v
+                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*safe-sparse-operations*
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*safe-sparse-operations*
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(ex-info&nbsp;message&nbsp;m))
+                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(ex-info&nbsp;message&nbsp;m))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v)
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v)
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v))
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                041&nbsp;&nbsp;
+                042&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                042&nbsp;&nbsp;(defn&nbsp;sparse-array?
+                043&nbsp;&nbsp;(defn&nbsp;sparse-array?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                043&nbsp;&nbsp;&nbsp;&nbsp;&quot;`true`&nbsp;if&nbsp;`x`&nbsp;is&nbsp;a&nbsp;sparse&nbsp;array&nbsp;conforming&nbsp;to&nbsp;the&nbsp;conventions&nbsp;established
+                044&nbsp;&nbsp;&nbsp;&nbsp;&quot;`true`&nbsp;if&nbsp;`x`&nbsp;is&nbsp;a&nbsp;sparse&nbsp;array&nbsp;conforming&nbsp;to&nbsp;the&nbsp;conventions&nbsp;established
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                044&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;this&nbsp;library,&nbsp;else&nbsp;`false`.&quot;
+                045&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;this&nbsp;library,&nbsp;else&nbsp;`false`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;sparse-array?&nbsp;should&nbsp;not&nbsp;throw&nbsp;exceptions&nbsp;even&nbsp;when
+                046&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;sparse-array?&nbsp;should&nbsp;not&nbsp;throw&nbsp;exceptions&nbsp;even&nbsp;when
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;*safe-sparse-operations*&nbsp;is&nbsp;true,&nbsp;since&nbsp;we&nbsp;may&nbsp;use&nbsp;to&nbsp;test
+                047&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;*safe-sparse-operations*&nbsp;is&nbsp;true,&nbsp;since&nbsp;we&nbsp;may&nbsp;use&nbsp;to&nbsp;test
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                047&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;whether&nbsp;an&nbsp;object&nbsp;is&nbsp;a&nbsp;sparse&nbsp;array.&nbsp;The&nbsp;place&nbsp;to&nbsp;throw&nbsp;the&nbsp;exceptions
+                048&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;whether&nbsp;an&nbsp;object&nbsp;is&nbsp;a&nbsp;sparse&nbsp;array.&nbsp;The&nbsp;place&nbsp;to&nbsp;throw&nbsp;the&nbsp;exceptions
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;(if&nbsp;required)&nbsp;is&nbsp;after&nbsp;it&nbsp;has&nbsp;failed.
+                049&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;(if&nbsp;required)&nbsp;is&nbsp;after&nbsp;it&nbsp;has&nbsp;failed.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                049&nbsp;&nbsp;&nbsp;&nbsp;([x]
+                050&nbsp;&nbsp;&nbsp;&nbsp;([x]
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
+                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sparse-array?
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sparse-array?
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:coord&nbsp;x)
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:coord&nbsp;x)
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;(:content&nbsp;x))
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;(:content&nbsp;x))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:content&nbsp;x))))))
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:content&nbsp;x))))))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                059&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;&amp;&nbsp;axes]
+                060&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;&amp;&nbsp;axes]
                 </span><br/>
 <span class="partial" title="16 out of 17 forms covered">
-                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
+                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;x)
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;x)
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Array&nbsp;must&nbsp;be&nbsp;a&nbsp;map&quot;&nbsp;{:array&nbsp;x})
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Array&nbsp;must&nbsp;be&nbsp;a&nbsp;map&quot;&nbsp;{:array&nbsp;x})
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(integer?&nbsp;(:dimensions&nbsp;x))&nbsp;(pos?&nbsp;(:dimensions&nbsp;x)))
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(integer?&nbsp;(:dimensions&nbsp;x))&nbsp;(pos?&nbsp;(:dimensions&nbsp;x)))
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;The&nbsp;value&nbsp;of&nbsp;`:dimensions`&nbsp;must&nbsp;be&nbsp;a&nbsp;positive&nbsp;integer,&nbsp;not&nbsp;&quot;&nbsp;(:dimensions&nbsp;x))
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;The&nbsp;value&nbsp;of&nbsp;`:dimensions`&nbsp;must&nbsp;be&nbsp;a&nbsp;positive&nbsp;integer,&nbsp;not&nbsp;&quot;&nbsp;(:dimensions&nbsp;x))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
+                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword?&nbsp;(:coord&nbsp;x))
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword?&nbsp;(:coord&nbsp;x))
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;The&nbsp;value&nbsp;of&nbsp;`:coord`&nbsp;must&nbsp;be&nbsp;a&nbsp;keyword,&nbsp;not&nbsp;&quot;&nbsp;(:coord&nbsp;x))
+                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;The&nbsp;value&nbsp;of&nbsp;`:coord`&nbsp;must&nbsp;be&nbsp;a&nbsp;keyword,&nbsp;not&nbsp;&quot;&nbsp;(:coord&nbsp;x))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
+                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
+                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;(:coord&nbsp;x)&nbsp;(first&nbsp;axes))
+                074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;(:coord&nbsp;x)&nbsp;(first&nbsp;axes))
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;The&nbsp;value&nbsp;of&nbsp;`:coord`&nbsp;must&nbsp;be&nbsp;&quot;&nbsp;(first&nbsp;axes)&nbsp;&quot;,&nbsp;not&nbsp;&quot;&nbsp;(:coord&nbsp;x))
+                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;The&nbsp;value&nbsp;of&nbsp;`:coord`&nbsp;must&nbsp;be&nbsp;&quot;&nbsp;(first&nbsp;axes)&nbsp;&quot;,&nbsp;not&nbsp;&quot;&nbsp;(:coord&nbsp;x))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
+                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?&nbsp;(rest&nbsp;axes))
+                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?&nbsp;(rest&nbsp;axes))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(safe-test-or-throw
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;(:content&nbsp;x)&nbsp;:data)
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;(:content&nbsp;x)&nbsp;:data)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;there&nbsp;are&nbsp;no&nbsp;further&nbsp;axes&nbsp;the&nbsp;value&nbsp;of&nbsp;`:content`&nbsp;must&nbsp;be&nbsp;`:data`&quot;
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;there&nbsp;are&nbsp;no&nbsp;further&nbsp;axes&nbsp;the&nbsp;value&nbsp;of&nbsp;`:content`&nbsp;must&nbsp;be&nbsp;`:data`&quot;
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;x})
                 </span><br/>
 <span class="partial" title="4 out of 5 forms covered">
-                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;(:content&nbsp;x)&nbsp;(rest&nbsp;axes))
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;(:content&nbsp;x)&nbsp;(rest&nbsp;axes))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sparse-array?
+                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sparse-array?
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(x&nbsp;%)&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;x)))))))))
+                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(x&nbsp;%)&nbsp;(filter&nbsp;integer?&nbsp;(keys&nbsp;x)))))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                087&nbsp;&nbsp;
+                088&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                088&nbsp;&nbsp;(defn-&nbsp;unsafe-put
+                089&nbsp;&nbsp;(defn-&nbsp;unsafe-put
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                089&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;value&nbsp;coordinates]
+                090&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;value&nbsp;coordinates]
                 </span><br/>
 <span class="partial" title="1 out of 2 forms covered">
-                090&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                091&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                091&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
+                092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
 <span class="partial" title="14 out of 15 forms covered">
-                092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(and&nbsp;(integer?&nbsp;%)&nbsp;(or&nbsp;(zero?&nbsp;%)&nbsp;(pos?&nbsp;%)))
+                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(and&nbsp;(integer?&nbsp;%)&nbsp;(or&nbsp;(zero?&nbsp;%)&nbsp;(pos?&nbsp;%)))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coordinates)
+                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coordinates)
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array
+                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(first&nbsp;coordinates)
+                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(first&nbsp;coordinates)
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;:data&nbsp;(:content&nbsp;array))
+                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;:data&nbsp;(:content&nbsp;array))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value
+                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
+                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;put
+                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;put
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
+                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
                 </span><br/>
 <span class="partial" title="4 out of 5 forms covered">
-                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or
+                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(array&nbsp;(first&nbsp;coordinates))
+                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(array&nbsp;(first&nbsp;coordinates))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;make-sparse-array&nbsp;(:content&nbsp;array)))
+                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;make-sparse-array&nbsp;(:content&nbsp;array)))
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons&nbsp;value&nbsp;(rest&nbsp;coordinates))))))))
+                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons&nbsp;value&nbsp;(rest&nbsp;coordinates))))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                107&nbsp;&nbsp;
+                108&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                108&nbsp;&nbsp;(defn&nbsp;put
+                109&nbsp;&nbsp;(defn&nbsp;put
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                109&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sparse&nbsp;array&nbsp;like&nbsp;this&nbsp;`array`&nbsp;but&nbsp;with&nbsp;this&nbsp;`value`&nbsp;at&nbsp;these
+                110&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sparse&nbsp;array&nbsp;like&nbsp;this&nbsp;`array`&nbsp;but&nbsp;with&nbsp;this&nbsp;`value`&nbsp;at&nbsp;these
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                110&nbsp;&nbsp;&nbsp;&nbsp;`coordinates`.&nbsp;Returns&nbsp;`nil`&nbsp;if&nbsp;any&nbsp;coordinate&nbsp;is&nbsp;invalid.&quot;
+                111&nbsp;&nbsp;&nbsp;&nbsp;`coordinates`.&nbsp;Returns&nbsp;`nil`&nbsp;if&nbsp;any&nbsp;coordinate&nbsp;is&nbsp;invalid.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                111&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;value&nbsp;&amp;&nbsp;coordinates]
+                112&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;value&nbsp;&amp;&nbsp;coordinates]
                 </span><br/>
 <span class="partial" title="6 out of 7 forms covered">
-                112&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                113&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                113&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(nil?&nbsp;value)
+                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(nil?&nbsp;value)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
+                115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-sparse-operations?)
+                116&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-sparse-operations?)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                116&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-put&nbsp;array&nbsp;value&nbsp;coordinates)
+                117&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-put&nbsp;array&nbsp;value&nbsp;coordinates)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                117&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(sparse-array?&nbsp;array))
+                118&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(sparse-array?&nbsp;array))
                 </span><br/>
 <span class="not-covered" title="0 out of 7 forms covered">
-                118&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(ex-info&nbsp;&quot;Sparse&nbsp;array&nbsp;expected&quot;&nbsp;{:array&nbsp;array}))
+                119&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(ex-info&nbsp;&quot;Sparse&nbsp;array&nbsp;expected&quot;&nbsp;{:array&nbsp;array}))
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                119&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not=&nbsp;(:dimensions&nbsp;array)&nbsp;(count&nbsp;coordinates))
+                120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not=&nbsp;(:dimensions&nbsp;array)&nbsp;(count&nbsp;coordinates))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
+                122&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                122&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Expected&nbsp;&quot;&nbsp;(:dimensions&nbsp;array)&nbsp;&quot;&nbsp;coordinates;&nbsp;found&nbsp;&quot;&nbsp;(count&nbsp;coordinates))
+                123&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Expected&nbsp;&quot;&nbsp;(:dimensions&nbsp;array)&nbsp;&quot;&nbsp;coordinates;&nbsp;found&nbsp;&quot;&nbsp;(count&nbsp;coordinates))
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                123&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
+                124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates}))
+                125&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates}))
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                125&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not
+                126&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                126&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
+                127&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
 <span class="partial" title="13 out of 15 forms covered">
-                127&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(and&nbsp;(integer?&nbsp;%)&nbsp;(or&nbsp;(zero?&nbsp;%)&nbsp;(pos?&nbsp;%)))
+                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(and&nbsp;(integer?&nbsp;%)&nbsp;(or&nbsp;(zero?&nbsp;%)&nbsp;(pos?&nbsp;%)))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coordinates))
+                129&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coordinates))
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                129&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                130&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                130&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
+                131&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                131&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Coordinates&nbsp;must&nbsp;be&nbsp;zero&nbsp;or&nbsp;positive&nbsp;integers&quot;
+                132&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Coordinates&nbsp;must&nbsp;be&nbsp;zero&nbsp;or&nbsp;positive&nbsp;integers&quot;
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                132&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
+                133&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                133&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates
+                134&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates
                 </span><br/>
 <span class="not-covered" title="0 out of 13 forms covered">
-                134&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:invalid&nbsp;(remove&nbsp;#(and&nbsp;(pos?&nbsp;%)&nbsp;(integer?&nbsp;%))&nbsp;coordinates)}))
+                135&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:invalid&nbsp;(remove&nbsp;#(and&nbsp;(pos?&nbsp;%)&nbsp;(integer?&nbsp;%))&nbsp;coordinates)}))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                135&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
+                136&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                136&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-put&nbsp;array&nbsp;value&nbsp;coordinates)))
+                137&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-put&nbsp;array&nbsp;value&nbsp;coordinates)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                137&nbsp;&nbsp;
+                138&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                138&nbsp;&nbsp;(defn-&nbsp;unsafe-get
+                139&nbsp;&nbsp;(defn-&nbsp;unsafe-get
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                139&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;I&nbsp;am&nbsp;CERTAIN&nbsp;there&nbsp;is&nbsp;a&nbsp;more&nbsp;elegant&nbsp;solution&nbsp;to&nbsp;this.
+                140&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;I&nbsp;am&nbsp;CERTAIN&nbsp;there&nbsp;is&nbsp;a&nbsp;more&nbsp;elegant&nbsp;solution&nbsp;to&nbsp;this.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                140&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;coordinates]
+                141&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;coordinates]
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                141&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;(array&nbsp;(first&nbsp;coordinates))]
+                142&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;(array&nbsp;(first&nbsp;coordinates))]
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                142&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                143&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                143&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;:data&nbsp;(:content&nbsp;array))
+                144&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;:data&nbsp;(:content&nbsp;array))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                144&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v
+                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(nil?&nbsp;v)
+                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(nil?&nbsp;v)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
+                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
+                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;get&nbsp;(cons&nbsp;v&nbsp;(rest&nbsp;coordinates))))))
+                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;get&nbsp;(cons&nbsp;v&nbsp;(rest&nbsp;coordinates))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                149&nbsp;&nbsp;
+                150&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                150&nbsp;&nbsp;(defn&nbsp;get
+                151&nbsp;&nbsp;(defn&nbsp;get
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                151&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;value&nbsp;in&nbsp;this&nbsp;sparse&nbsp;`array`&nbsp;at&nbsp;these&nbsp;`coordinates`.&quot;
+                152&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;value&nbsp;in&nbsp;this&nbsp;sparse&nbsp;`array`&nbsp;at&nbsp;these&nbsp;`coordinates`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                152&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;&amp;&nbsp;coordinates]
+                153&nbsp;&nbsp;&nbsp;&nbsp;[array&nbsp;&amp;&nbsp;coordinates]
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                153&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                154&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                154&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-sparse-operations?)
+                155&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-sparse-operations?)
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                155&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-get&nbsp;array&nbsp;coordinates)
+                156&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-get&nbsp;array&nbsp;coordinates)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                156&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(sparse-array?&nbsp;array))
+                157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(sparse-array?&nbsp;array))
                 </span><br/>
 <span class="not-covered" title="0 out of 7 forms covered">
-                157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(ex-info&nbsp;&quot;Sparse&nbsp;array&nbsp;expected&quot;&nbsp;{:array&nbsp;array}))
+                158&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(ex-info&nbsp;&quot;Sparse&nbsp;array&nbsp;expected&quot;&nbsp;{:array&nbsp;array}))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                158&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(every?
+                159&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(every?
                 </span><br/>
 <span class="partial" title="13 out of 15 forms covered">
-                159&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(and&nbsp;(integer?&nbsp;%)&nbsp;(or&nbsp;(zero?&nbsp;%)&nbsp;(pos?&nbsp;%)))
+                160&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(and&nbsp;(integer?&nbsp;%)&nbsp;(or&nbsp;(zero?&nbsp;%)&nbsp;(pos?&nbsp;%)))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                160&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coordinates))
+                161&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coordinates))
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                161&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                162&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                162&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
+                163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Coordinates&nbsp;must&nbsp;be&nbsp;zero&nbsp;or&nbsp;positive&nbsp;integers&quot;
+                164&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Coordinates&nbsp;must&nbsp;be&nbsp;zero&nbsp;or&nbsp;positive&nbsp;integers&quot;
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                164&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
+                165&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                165&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates
+                166&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates
                 </span><br/>
 <span class="not-covered" title="0 out of 13 forms covered">
-                166&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:invalid&nbsp;(remove&nbsp;#(and&nbsp;(pos?&nbsp;%)&nbsp;(integer?&nbsp;%))&nbsp;coordinates)}))
+                167&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:invalid&nbsp;(remove&nbsp;#(and&nbsp;(pos?&nbsp;%)&nbsp;(integer?&nbsp;%))&nbsp;coordinates)}))
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                167&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(=&nbsp;(:dimensions&nbsp;array)&nbsp;(count&nbsp;coordinates)))
+                168&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(=&nbsp;(:dimensions&nbsp;array)&nbsp;(count&nbsp;coordinates)))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                168&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                169&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                169&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
+                170&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ex-info
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                170&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Expected&nbsp;&quot;&nbsp;(:dimensions&nbsp;array)&nbsp;&quot;&nbsp;coordinates;&nbsp;found&nbsp;&quot;&nbsp;(count&nbsp;coordinates))
+                171&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Expected&nbsp;&quot;&nbsp;(:dimensions&nbsp;array)&nbsp;&quot;&nbsp;coordinates;&nbsp;found&nbsp;&quot;&nbsp;(count&nbsp;coordinates))
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                171&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
+                172&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:array&nbsp;array
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                172&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates}))
+                173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:coordinates&nbsp;coordinates}))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
+                174&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                174&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-get&nbsp;array&nbsp;coordinates)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                175&nbsp;&nbsp;
+                175&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(unsafe-get&nbsp;array&nbsp;coordinates)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 176&nbsp;&nbsp;
