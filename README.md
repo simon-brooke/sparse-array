@@ -1,13 +1,13 @@
 # sparse-array
 
-A Clojure library designed to manipulate sparse *arrays* - multi-dimensional spaces accessed by indices, but containing arbitrary values rather than just numbers. For sparse spaces which contain numbers only, you're better to use a *sparse matrix* library, for example [clojure.core.matrix](https://mikera.github.io/core.matrix/).
+A Clojure library designed to manipulate sparse *arrays* - multi-dimensional spaces accessed by indices, but containing arbitrary values rather than just numbers. For sparse spaces which contain numbers only, you're better to use a *sparse matrix* library, [for example clojure.core.matrix](https://mikera.github.io/core.matrix/).
 
 Arbitrary numbers of dimensions are supported, up to limits imposed by the JVM stack.
 
 Available from Clojars: [![Clojars Project](https://img.shields.io/clojars/v/sparse-array.svg)](https://clojars.org/sparse-array)
 Tests currently [![CircleCI](https://circleci.com/gh/simon-brooke/sparse-array.svg?style=svg)](https://circleci.com/gh/simon-brooke/sparse-array)
 
-## Conventions:
+## Conventions
 
 ### Sparse arrays
 

@@ -1,6 +1,10 @@
 (ns sparse-array.core-test
-  (:require [clojure.test :refer :all]
-            [sparse-array.core :refer :all]))
+  (:require [clojure.test :refer [deftest is testing]]
+            [sparse-array.core :refer [*safe-sparse-operations* 
+                                       dense-dimensions dense-to-sparse
+                                       get make-sparse-array
+                                       merge-arrays put 
+                                       sparse-array? sparse-to-dense]]))
 
 (deftest creation-and-testing
   (testing "Creation and testing."

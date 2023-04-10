@@ -1,4 +1,5 @@
-(ns sparse-array.core)
+(ns sparse-array.core
+  "Operations on sparse arrays.")
 
 (declare put get)
 
@@ -17,7 +18,7 @@
   "Make a sparse array with these `dimensions`. Every member of `dimensions`
   must be a keyword; otherwise, `nil` will be returned."
   [& dimensions]
-  (if
+  (when
     (and (pos? (count dimensions))
          (every? keyword? dimensions))
     {:dimensions (count dimensions)
@@ -53,7 +54,7 @@
        x
        (cons
          (:coord x)
-         (if
+         (when
            (coll? (:content x))
            (:content x))))))
   ([x & axes]
@@ -133,9 +134,7 @@
          :coordinates coordinates
          :invalid (remove #(and (pos? %) (integer? %)) coordinates)}))
     :else
-    (unsafe-put array value coordinates)
-    value
-    *safe-sparse-operations*))
+    (unsafe-put array value coordinates)))
 
 (defn- unsafe-get
   ;; TODO: I am CERTAIN there is a more elegant solution to this.
@@ -174,7 +173,6 @@
          :coordinates coordinates}))
     :else
     (unsafe-get array coordinates)))
-
 
 (defn dense-dimensions
   "How many usable dimensions (represented as vectors) does the dense array
