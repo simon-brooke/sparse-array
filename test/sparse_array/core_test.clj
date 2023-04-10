@@ -1,6 +1,10 @@
 (ns sparse-array.core-test
-  (:require [clojure.test :refer :all]
-            [sparse-array.core :refer :all]))
+  (:require [clojure.test :refer [deftest is testing]]
+            [sparse-array.core :refer [*safe-sparse-operations* 
+                                       dense-dimensions dense-to-sparse
+                                       get make-sparse-array
+                                       merge-arrays put 
+                                       sparse-array? sparse-to-dense]]))
 
 (deftest creation-and-testing
   (testing "Creation and testing."
@@ -172,20 +176,30 @@
           (get (make-sparse-array :x :y :z) 3 4 5 6))))))
 
 (deftest merge-test
-  (testing "merge, one dimension"
+  (testing "merge, sparse arrays, one dimension"
     (let
-      [merged (merge-sparse-arrays
+      [merged (merge-arrays
                 (put (make-sparse-array :x) "hello" 3)
                 (put (make-sparse-array :x) "goodbye" 4))]
       (is (= "hello" (get merged 3)))
       (is (= "goodbye" (get merged 4)))))
-  (testing "merge, two dimensions"
+  (testing "merge, sparse arrays, two dimensions"
     (let
-      [merged (merge-sparse-arrays
+      [merged (merge-arrays
                 (put (make-sparse-array :x :y) "hello" 3 4)
                 (put (make-sparse-array :x :y) "goodbye" 4 3))]
       (is (= "hello" (get merged 3 4)))
-      (is (= "goodbye" (get merged 4 3))))))
+      (is (= "goodbye" (get merged 4 3)))))
+  (testing "merge, dense with sparse, two dimensions")
+  (let [dense [[[nil nil nil][nil nil nil][nil nil nil]]
+               [[nil nil nil][nil nil nil][nil nil nil]]
+               [[nil nil nil][nil nil nil][nil nil nil]]]
+        sparse (put (put (make-sparse-array :x :y :z) "hello" 0 0 0) "goodbye" 2 2 2)
+        expected [[["hello" nil nil] [nil nil nil] [nil nil nil]]
+                  [[nil nil nil] [nil nil nil] [nil nil nil]]
+                  [[nil nil nil] [nil nil nil] [nil nil "goodbye"]]]
+        actual (merge-arrays dense sparse)]
+    (is (= actual expected))))
 
 (deftest dense-to-sparse-tests
   (testing "dense-to-sparse, one dimension"

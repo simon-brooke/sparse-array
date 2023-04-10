@@ -1,5 +1,8 @@
 (ns sparse-array.extract
-  (:require [sparse-array.core :refer :all]))
+  "Extracting interesting data from sparse arrays."
+  (:require [sparse-array.core :refer [*safe-sparse-operations*
+                                       dense-array? dense-dimensions
+                                       make-sparse-array sparse-array?]]))
 
 ;;; The whole point of working with sparse arrays is to work with interesting
 ;;; subsets of arrays most of which are uninteresting. To extract an
@@ -15,11 +18,11 @@
       make-sparse-array
       (cons
         (:coord array)
-        (if (coll? (:content array)) (:content array))))
+        (when (coll? (:content array)) (:content array))))
     (map
       #(if
          (= :data (:content array))
-         (if (function (array %)) {% (array %)})
+         (when (function (array %)) {% (array %)})
          (let [v (extract-from-sparse (array %) function)]
            (if
              (empty?
@@ -42,7 +45,7 @@
        (if
          (= dimensions 1)
          (map
-           (fn [i v] (if (function v) (hash-map i v)))
+           (fn [i v] (when (function v) (hash-map i v)))
            (range)
            array)
          (map
